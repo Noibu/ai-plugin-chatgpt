@@ -1,0 +1,11 @@
+interface:
+  display_name: "Segment Analysis"
+  short_description: "Compare traffic, devices, markets, and campaigns"
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "noibu"
+      description: "Authenticated Noibu analytics and controlled actions"
+      transport: "streamable_http"
+      url: "https://mcp.noibu.com/mcp"

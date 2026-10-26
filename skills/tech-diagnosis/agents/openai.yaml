@@ -1,0 +1,11 @@
+interface:
+  display_name: "Technical Diagnosis"
+  short_description: "Diagnose errors, web vitals, and concrete fixes"
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "noibu"
+      description: "Authenticated Noibu analytics and controlled actions"
+      transport: "streamable_http"
+      url: "https://mcp.noibu.com/mcp"

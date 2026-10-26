@@ -1,0 +1,11 @@
+interface:
+  display_name: "Build Business Context"
+  short_description: "Research, review, and save approved store context"
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "noibu"
+      description: "Authenticated Noibu analytics and controlled actions"
+      transport: "streamable_http"
+      url: "https://mcp.noibu.com/mcp"

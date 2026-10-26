@@ -1,0 +1,48 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "noibu",
+  "version": "1.2.0",
+  "description": "Analyze ecommerce conversion, shopper behavior, errors, and experiments using Noibu data.",
+  "author": {
+    "name": "Noibu",
+    "email": "support@noibu.com",
+    "url": "https://noibu.com"
+  },
+  "homepage": "https://noibu.com",
+  "repository": "https://github.com/Noibu/ai-plugin",
+  "license": "MIT",
+  "keywords": [
+    "ecommerce",
+    "analytics",
+    "conversion",
+    "accessibility",
+    "experiments"
+  ],
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/noibu-setup/SKILL.md",
+      "interface": {
+        "displayName": "Noibu",
+        "shortDescription": "Ecommerce insights and fixes",
+        "longDescription": "Connect Noibu to analyze store health, checkout, products, traffic segments, technical issues, and A/B opportunities. Includes native in-chat KPI/funnel and priority-board templates with investigation, save, export, schedule, context-approval, and selected A/B draft actions through ChatGPT. Save as Live Site publishes the verified report into a private Site with durable snapshot history; live data connections and scheduled updates are separate options requiring their own verification. Technical, accessibility, performance and implementation fixes reuse GitHub or prompt connection and repository selection; source writes and PRs need separate authorization. Missing visualization or host-action support falls back to useful reports and copyable requests. Analytics and requested drafts use the remote MCP connection. Browser accessibility auditing uses bundled axe-core with approved desktop/Chrome execution and returns findings directly without a server reader. Visual previews are optional and their omission is explained. Native scheduled reports, Site publishing, repository changes, and external delivery require the actual available tools and appropriate authorization.",
+        "developerName": "Noibu",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://noibu.com",
+        "supportURL": "https://help.noibu.com",
+        "privacyPolicyURL": "https://noibu.com/privacy-policy",
+        "termsOfServiceURL": "https://noibu.com/terms-of-service",
+        "logo": "./assets/noibu-logo-square.svg",
+        "composerIcon": "./assets/noibu-logo-square.svg",
+        "defaultPrompt": [
+          "How is my store doing in the last 24 hours?",
+          "Compare checkout performance with the previous 30 days.",
+          "Find evidence-backed A/B tests to improve add-to-cart rate."
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+  <form data-noibu-schedule data-checkout-schedule hidden>
+    <h3>Schedule checkout analysis</h3>
+    <fieldset><legend>Frequency</legend><div class="noibu-choice-grid">
+      <label class="noibu-choice"><input type="radio" name="frequency" value="weekly" checked><span>Weekly</span></label>
+      <label class="noibu-choice"><input type="radio" name="frequency" value="biweekly"><span>Every 2 weeks</span></label>
+      <label class="noibu-choice"><input type="radio" name="frequency" value="monthly"><span>Monthly</span></label>
+    </div></fieldset>
+    <fieldset data-weekday><legend>Day</legend><div class="noibu-choice-row">
+      <label class="noibu-choice"><input type="radio" name="weekday" value="Monday" checked><span>Mon</span></label>
+      <label class="noibu-choice"><input type="radio" name="weekday" value="Tuesday"><span>Tue</span></label>
+      <label class="noibu-choice"><input type="radio" name="weekday" value="Wednesday"><span>Wed</span></label>
+      <label class="noibu-choice"><input type="radio" name="weekday" value="Thursday"><span>Thu</span></label>
+      <label class="noibu-choice"><input type="radio" name="weekday" value="Friday"><span>Fri</span></label>
+      <label class="noibu-choice"><input type="radio" name="weekday" value="Saturday"><span>Sat</span></label>
+      <label class="noibu-choice"><input type="radio" name="weekday" value="Sunday"><span>Sun</span></label>
+    </div></fieldset>
+    <div class="noibu-schedule-grid">
+      <label class="form-label" data-anchor hidden>First run date<input type="date" name="startDate" class="form-control"><span class="text-small">Required for an unambiguous every-two-weeks cadence.</span></label>
+      <label class="form-label" data-monthday hidden>Day of month<input type="number" name="monthday" min="1" max="28" value="1" class="form-control"><span class="text-small">Days 1–28 occur every month.</span></label>
+    </div>
+    <fieldset><legend>Time</legend><div class="viz-row">
+      <button type="button" class="btn" data-time="07:00" aria-pressed="false">7 am</button>
+      <button type="button" class="btn" data-time="09:00" aria-pressed="true">9 am</button>
+      <button type="button" class="btn" data-time="12:00" aria-pressed="false">12 pm</button>
+      <button type="button" class="btn" data-time="17:00" aria-pressed="false">5 pm</button>
+    </div></fieldset>
+    <div class="noibu-schedule-grid">
+      <label class="form-label">Custom time<input name="time" class="form-control" type="time" value="09:00" required></label>
+      <label class="form-label">Timezone<input name="timezone" class="form-control" placeholder="Area/City" required></label>
+      <label class="form-label">Report detail<select name="detail" class="form-select"><option value="summary">Summary</option><option value="full">Full analysis</option></select></label>
+    </div>
+    <fieldset><legend>Send to</legend><p class="text-small">Choose at least one. Connections and destinations are verified in ChatGPT.</p><div class="noibu-choice-row">
+      <label class="noibu-choice"><input type="checkbox" name="outputs" value="email"><span>Email</span></label>
+      <label class="noibu-choice"><input type="checkbox" name="outputs" value="slack"><span>Slack</span></label>
+      <label class="noibu-choice"><input type="checkbox" name="outputs" value="notion"><span>Notion</span></label>
+    </div></fieldset>
+    <div class="noibu-schedule-grid">
+      <label class="form-label" data-output="email" hidden>Email recipient (optional)<input name="emailDestination" maxlength="300" class="form-control" placeholder="Choose recipient in chat"></label>
+      <label class="form-label" data-output="email" hidden>Email provider / sender (optional)<input name="emailProvider" maxlength="100" class="form-control" placeholder="Gmail, Outlook, or choose in chat"></label>
+      <label class="form-label" data-output="slack" hidden>Slack destination (optional)<input name="slackDestination" maxlength="300" class="form-control" placeholder="Channel or person; resolve in chat"></label>
+      <label class="form-label" data-output="notion" hidden>Notion destination (optional)<input name="notionDestination" maxlength="300" class="form-control" placeholder="Page/database link or choose in chat"></label>
+    </div>
+    <details><summary>Other delivery options</summary><div class="noibu-choice-row">
+      <label class="noibu-choice"><input type="checkbox" name="outputs" value="chatgpt"><span>ChatGPT</span></label>
+      <label class="noibu-choice"><input type="checkbox" name="outputs" value="connected-app"><span>Other connected app</span></label>
+    </div><div class="noibu-schedule-grid">
+      <label class="form-label" data-output="connected-app" hidden>App/account (optional)<input name="otherProvider" maxlength="100" class="form-control" placeholder="Teams or another app"></label>
+      <label class="form-label" data-output="connected-app" hidden>Destination (optional)<input name="otherDestination" maxlength="300" class="form-control" placeholder="Resolve exact destination in chat"></label>
+    </div></details>
+    <p class="text-small">Submitting requests native schedule setup, not an immediate send or Notion write. No schedule exists until ChatGPT confirms it. Missing connections or destinations are resolved before creation.</p>
+    <div class="noibu-schedule-footer viz-row"><button type="button" class="btn btn-ghost" data-cancel-schedule>Skip</button><button type="submit" class="btn btn-primary">Schedule analysis</button></div>
+  </form>

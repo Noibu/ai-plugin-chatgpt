@@ -1,0 +1,157 @@
+#{{ROOT}} {
+  --noibu-surface:color-mix(in srgb,var(--foreground) 4%,var(--background));
+  --noibu-inset:color-mix(in srgb,var(--foreground) 6%,var(--background));
+  --noibu-rule:color-mix(in srgb,var(--foreground) 10%,var(--background));
+  --noibu-secondary:color-mix(in srgb,var(--foreground) 65%,var(--background));
+  --noibu-mark:var(--foreground);
+  color:var(--foreground); background:transparent;
+}
+#{{ROOT}} * { box-sizing:border-box; }
+#{{ROOT}} .noibu-summary { margin:0 0 1.4rem; }
+#{{ROOT}} .noibu-overview, #{{ROOT}} .noibu-finding, #{{ROOT}} .noibu-actions {
+  background:var(--noibu-surface); border-radius:1.4rem; overflow-wrap:anywhere;
+}
+#{{ROOT}} .noibu-overview { margin-block:0 1.25rem; }
+#{{ROOT}} .noibu-report-heading { display:flex; flex-wrap:wrap; gap:.6rem 1.5rem; align-items:center; justify-content:space-between; padding:1.1rem 1.5rem; border-bottom:1px solid var(--noibu-rule); }
+#{{ROOT}} .noibu-report-heading h2 { margin:0; font-size:1em; font-weight:500; letter-spacing:.07em; text-transform:uppercase; }
+#{{ROOT}} .noibu-report-heading span, #{{ROOT}} .noibu-label, #{{ROOT}} .noibu-secondary, #{{ROOT}} .noibu-impact, #{{ROOT}} .noibu-generated { color:var(--noibu-secondary); }
+#{{ROOT}} .noibu-overview-content { padding:1.5rem; }
+#{{ROOT}} .noibu-kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,7.5rem),1fr)); gap:.75rem; }
+#{{ROOT}} .noibu-stat { min-width:0; padding:1rem; border-radius:1rem; background:var(--noibu-inset); }
+#{{ROOT}} .noibu-label { display:block; font-size:.85em; letter-spacing:.04em; text-transform:uppercase; }
+#{{ROOT}} .noibu-stat-value { font-size:1.75em; font-weight:500; margin:.7rem 0 .5rem; overflow-wrap:anywhere; }
+#{{ROOT}} .noibu-delta { display:inline-block; font-size:.9em; }
+#{{ROOT}} .noibu-favorable { color:var(--green); }
+#{{ROOT}} .noibu-unfavorable, #{{ROOT}} .noibu-decline { color:var(--orange); }
+#{{ROOT}} .noibu-stat-detail { display:block; font-size:.9em; margin-top:.4rem; }
+#{{ROOT}} .noibu-neutral { color:var(--noibu-secondary); }
+#{{ROOT}} .noibu-funnel, #{{ROOT}} .noibu-table-section, #{{ROOT}} .noibu-highlights { margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--noibu-rule); }
+#{{ROOT}} .noibu-funnel:first-child, #{{ROOT}} .noibu-table-section:first-child, #{{ROOT}} .noibu-highlights:first-child { margin-top:0; padding-top:0; border-top:0; }
+#{{ROOT}} h3 { font-weight:500; margin:0 0 1rem; }
+#{{ROOT}} .noibu-stage-labels { display:grid; gap:.65rem; margin-bottom:1rem; }
+#{{ROOT}} .noibu-stage { min-width:0; }
+#{{ROOT}} .noibu-stage-value { margin:.4rem 0; font-size:1.15em; font-weight:500; }
+#{{ROOT}} .noibu-stage-value .noibu-delta { font-weight:400; }
+#{{ROOT}} .noibu-stage .noibu-secondary { display:block; font-size:.85em; }
+#{{ROOT}} .noibu-funnel-chart { display:block; width:100%; height:220px; overflow:visible; }
+#{{ROOT}} .noibu-current-mark { fill:var(--noibu-mark); }
+#{{ROOT}} .noibu-prior-mark { fill:color-mix(in srgb,var(--foreground) 12%,var(--background)); }
+#{{ROOT}} .noibu-funnel-link { fill:color-mix(in srgb,var(--noibu-mark) 10%,var(--background)); }
+#{{ROOT}} .noibu-chart-key { display:flex; flex-wrap:wrap; gap:1rem; margin-top:.75rem; color:var(--noibu-secondary); font-size:.85em; }
+#{{ROOT}} .noibu-chart-key span { display:inline-flex; align-items:center; gap:.4rem; }
+#{{ROOT}} .noibu-chart-key i { display:inline-block; width:.65rem; height:.65rem; }
+#{{ROOT}} .noibu-key-current { background:var(--noibu-mark); }
+#{{ROOT}} .noibu-key-prior { background:color-mix(in srgb,var(--foreground) 12%,var(--background)); }
+#{{ROOT}} .noibu-funnel-mobile { display:none; padding:0; list-style:none; }
+#{{ROOT}} .noibu-funnel-many .noibu-funnel-desktop { display:none; }
+#{{ROOT}} .noibu-funnel-many .noibu-funnel-mobile { display:grid; gap:1.25rem; }
+#{{ROOT}} .noibu-counts { margin-top:.75rem; }
+#{{ROOT}} .noibu-mobile-track, #{{ROOT}} .noibu-bar-track { height:.65rem; border-radius:1rem; background:var(--noibu-rule); }
+#{{ROOT}} .noibu-mobile-track span, #{{ROOT}} .noibu-bar-fill { display:block; height:100%; border-radius:inherit; background:var(--noibu-mark); }
+#{{ROOT}} .noibu-highlights { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap:1.5rem; }
+#{{ROOT}} .noibu-highlights p { margin:.5rem 0; font-weight:500; }
+#{{ROOT}} .noibu-table-section .noibu-numeric { text-align:right; font-variant-numeric:tabular-nums; }
+#{{ROOT}} .noibu-bar-row { display:grid; grid-template-columns:minmax(7rem,1fr) minmax(3rem,4fr) max-content; gap:.75rem; align-items:center; margin-block:.8rem; }
+#{{ROOT}} .noibu-finding { margin-block:1.25rem; padding:1.5rem; }
+#{{ROOT}} .noibu-finding-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.6rem 1rem; }
+#{{ROOT}} .noibu-tag { display:inline-block; padding:.25rem .6rem; border-radius:.55rem; background:var(--noibu-inset); color:var(--noibu-secondary); text-transform:uppercase; letter-spacing:.04em; font-size:.85em; }
+#{{ROOT}} .noibu-finding h3 { margin:.6rem 0 1.25rem; }
+#{{ROOT}} .noibu-finding p { color:var(--noibu-secondary); margin:0 0 1.25rem; }
+#{{ROOT}} .noibu-actions { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding:1.2rem 1.5rem; }
+#{{ROOT}} .noibu-actions h3 { margin:0; }
+#{{ROOT}} .noibu-generated { margin:.8rem 0; font-size:.8em; }
+#{{ROOT}} .noibu-caveats { margin:1.25rem 0; }
+#{{ROOT}} .noibu-caveats summary { color:var(--noibu-secondary); }
+#{{ROOT}} .noibu-schedule-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); gap:1rem; }
+#{{ROOT}} [data-noibu-schedule] { margin-top:1.5rem; }
+#{{ROOT}} [hidden] { display:none; }
+#{{ROOT}} .noibu-prompt { width:100%; }
+#{{ROOT}} .noibu-finding-group { margin-block:1.5rem; }
+#{{ROOT}} .noibu-finding-group > h2 { font-size:1em; font-weight:500; text-transform:uppercase; letter-spacing:.07em; }
+#{{ROOT}} .noibu-performance-card { margin-block:1rem; border:1px solid var(--noibu-rule); border-radius:1rem; overflow:hidden; overflow-wrap:anywhere; color:var(--foreground); }
+#{{ROOT}} .noibu-performance-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem; padding:.8rem 1.5rem; background:var(--noibu-surface); border-bottom:1px solid var(--noibu-rule); font-weight:500; }
+#{{ROOT}} .noibu-vital-status { padding:.2rem .6rem; border-radius:.4rem; color:var(--foreground); background:var(--noibu-inset); }
+#{{ROOT}} .noibu-performance-body { padding:1.5rem; }
+#{{ROOT}} .noibu-performance-body > p { margin:0 0 1.25rem; }
+#{{ROOT}} .noibu-vital-reading { display:flex; flex-wrap:wrap; align-items:baseline; gap:.5rem 1rem; margin:1.5rem 0 .75rem; }
+#{{ROOT}} .noibu-vital-reading strong { font-size:1.7em; font-weight:500; }
+#{{ROOT}} .noibu-vital-gauge { margin:0 0 .5rem; }
+#{{ROOT}} .noibu-vital-track { position:relative; display:flex; height:2.5rem; border-radius:.55rem; }
+#{{ROOT}} .noibu-vital-track > span { display:flex; align-items:center; justify-content:center; color:var(--foreground); }
+#{{ROOT}} .noibu-vital-good { background:color-mix(in srgb,var(--green) 22%,var(--background)); border-radius:.55rem 0 0 .55rem; }
+#{{ROOT}} .noibu-vital-improve { background:color-mix(in srgb,var(--yellow) 28%,var(--background)); }
+#{{ROOT}} .noibu-vital-poor { background:color-mix(in srgb,var(--red) 18%,var(--background)); border-radius:0 .55rem .55rem 0; }
+#{{ROOT}} .noibu-vital-marker { position:absolute; top:-.3rem; bottom:-.3rem; width:3px; transform:translateX(-50%); border-radius:2px; background:var(--foreground); }
+#{{ROOT}} .noibu-vital-ticks { position:relative; height:2rem; margin-top:.55rem; color:var(--foreground); font-size:.85em; }
+#{{ROOT}} .noibu-vital-ticks span { position:absolute; transform:translateX(-50%); white-space:nowrap; }
+#{{ROOT}} .noibu-vital-legend { font-size:.85em; margin-bottom:1.25rem; }
+#{{ROOT}} .noibu-performance-body .noibu-vital-context { margin-block:1.25rem; }
+/* All four analytics reports share checkout's light outlined design. */
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-overview,
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-finding,
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-actions {
+  background:var(--background); border:1px solid var(--noibu-rule); border-radius:1.25rem;
+}
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-report-heading,
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-finding-heading { background:var(--noibu-surface); }
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-overview { overflow:hidden; }
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-kpis { gap:1rem; }
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-stat { background:transparent; padding:0; border-radius:0; }
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-stat-value { font-size:1.25em; margin:.4rem 0; }
+#{{ROOT}}:is([data-noibu-workflow="checkout-analysis"],[data-noibu-workflow="product-analysis"],[data-noibu-workflow="segment-analysis"],[data-noibu-workflow="store-pulse"]) .noibu-stage-value { font-size:1.5em; }
+#{{ROOT}} .noibu-checkout-opportunity { padding:0; overflow:hidden; }
+#{{ROOT}} .noibu-checkout-opportunity .noibu-finding-heading { padding:.85rem 1.5rem; border-bottom:1px solid var(--noibu-rule); }
+#{{ROOT}} .noibu-opportunity-body { padding:1.5rem; }
+#{{ROOT}} .noibu-opportunity-body h3 { margin:0 0 1rem; }
+#{{ROOT}} .noibu-opportunity-body .noibu-next-check { color:var(--foreground); }
+#{{ROOT}} .noibu-checkout-mixes { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr)); gap:1.5rem; border-top:1px solid var(--noibu-rule); margin-top:1.5rem; padding-top:1.25rem; }
+#{{ROOT}} .noibu-checkout-mixes .noibu-table-section { margin:0; padding:0; border:0; min-width:0; }
+#{{ROOT}} .noibu-checkout-mixes .noibu-bar-row { grid-template-columns:minmax(0,1fr) minmax(3rem,1.5fr) max-content; }
+#{{ROOT}} .noibu-overview-save { display:flex; flex-wrap:wrap; justify-content:flex-end; margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--noibu-rule); }
+#{{ROOT}} .noibu-overview-context { margin:0 0 1.5rem; }
+#{{ROOT}} .noibu-supporting { margin-top:1.5rem; border-top:1px solid var(--noibu-rule); padding-top:1.25rem; }
+#{{ROOT}} [data-checkout-schedule] { border:1px solid var(--noibu-rule); border-radius:1.25rem; padding:1.5rem; background:var(--background); overflow-wrap:anywhere; }
+#{{ROOT}} [data-checkout-schedule] fieldset { border:0; min-width:0; padding:0; margin:1.5rem 0; }
+#{{ROOT}} [data-checkout-schedule] legend { margin-bottom:.75rem; color:var(--noibu-secondary); text-transform:uppercase; letter-spacing:.04em; }
+#{{ROOT}} .noibu-choice-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr)); gap:.75rem; }
+#{{ROOT}} .noibu-choice-row { display:flex; flex-wrap:wrap; gap:.75rem; }
+#{{ROOT}} .noibu-choice { display:flex; align-items:center; justify-content:center; gap:.6rem; min-width:0; padding:1rem; border:1px solid var(--noibu-rule); border-radius:.8rem; background:var(--background); color:var(--foreground); }
+#{{ROOT}} .noibu-choice:has(input:checked) { background:color-mix(in srgb,var(--blue) 10%,var(--background)); border-color:var(--blue); }
+#{{ROOT}} .noibu-choice input { accent-color:var(--blue); }
+#{{ROOT}} .noibu-schedule-footer { justify-content:flex-end; border-top:1px solid var(--noibu-rule); margin-top:1.5rem; padding-top:1.25rem; }
+#{{ROOT}} :is(.noibu-product-opportunity,.noibu-segment-opportunity) { padding:0; overflow:hidden; }
+#{{ROOT}} :is(.noibu-product-opportunity,.noibu-segment-opportunity) .noibu-finding-heading { padding:.85rem 1.5rem; background:var(--noibu-surface); border-bottom:1px solid var(--noibu-rule); }
+#{{ROOT}} :is(.noibu-product-opportunity,.noibu-segment-opportunity) .noibu-impact { border-radius:.4rem; background:var(--noibu-inset); padding:.2rem .5rem; }
+#{{ROOT}} :is(.noibu-product-opportunity,.noibu-segment-opportunity) .noibu-next-check { margin:0 0 1.25rem; }
+#{{ROOT}} :is(.noibu-product-opportunity,.noibu-segment-opportunity) .noibu-next-check p { margin:1rem 0; }
+#{{ROOT}} :is(.noibu-product-details,.noibu-segment-details) { margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--noibu-rule); }
+#{{ROOT}} :is(.noibu-product-details,.noibu-segment-details) > summary { text-align:center; }
+#{{ROOT}} :is(.noibu-product-details,.noibu-segment-details) > summary .noibu-show-less { display:none; }
+#{{ROOT}} :is(.noibu-product-details,.noibu-segment-details)[open] > summary .noibu-show-more { display:none; }
+#{{ROOT}} :is(.noibu-product-details,.noibu-segment-details)[open] > summary .noibu-show-less { display:inline; }
+#{{ROOT}} .noibu-product-name { display:block; max-width:32ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#{{ROOT}} .noibu-count-cell { display:flex; align-items:center; justify-content:flex-end; gap:.6rem; }
+#{{ROOT}} .noibu-count-track { display:block; flex:0 0 5rem; height:.5rem; border-radius:.2rem; background:var(--noibu-rule); }
+#{{ROOT}} .noibu-count-track > span { display:block; height:100%; border-radius:inherit; background:var(--noibu-mark); }
+#{{ROOT}} .noibu-extra-rows, #{{ROOT}} .noibu-more-findings { margin-block:1rem; }
+#{{ROOT}}[data-noibu-workflow="segment-analysis"] .noibu-kpis { grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.5rem; }
+#{{ROOT}}[data-noibu-workflow="segment-analysis"] .noibu-stat-value { font-size:1.75em; }
+#{{ROOT}} .noibu-overview-notes { margin-top:1.25rem; padding:.75rem 1rem; border-radius:.5rem; background:color-mix(in srgb,var(--yellow) 16%,var(--background)); color:var(--foreground); }
+#{{ROOT}} .noibu-overview-notes p { margin:.25rem 0; }
+@media(max-width:600px) {
+  #{{ROOT}} .noibu-performance-header, #{{ROOT}} .noibu-performance-body { padding:1rem; }
+  #{{ROOT}} .noibu-overview-content, #{{ROOT}} .noibu-finding { padding:1rem; }
+  #{{ROOT}} .noibu-report-heading, #{{ROOT}} .noibu-actions { padding:1rem; }
+  #{{ROOT}} .noibu-funnel-desktop { display:none; }
+  #{{ROOT}} .noibu-funnel-mobile { display:grid; gap:1.25rem; }
+  #{{ROOT}} .noibu-bar-row { grid-template-columns:minmax(0,1fr) max-content; }
+  #{{ROOT}} .noibu-bar-track { grid-row:2; grid-column:1 / -1; }
+  #{{ROOT}} .noibu-checkout-opportunity { padding:0; }
+  #{{ROOT}} .noibu-checkout-opportunity .noibu-finding-heading, #{{ROOT}} .noibu-opportunity-body, #{{ROOT}} [data-checkout-schedule] { padding:1rem; }
+  #{{ROOT}} .noibu-checkout-mixes .noibu-bar-row { grid-template-columns:minmax(0,1fr) max-content; }
+  #{{ROOT}} :is(.noibu-product-opportunity,.noibu-segment-opportunity) { padding:0; }
+  #{{ROOT}} :is(.noibu-product-opportunity,.noibu-segment-opportunity) .noibu-finding-heading { padding:1rem; }
+  #{{ROOT}} .noibu-product-name { max-width:20ch; }
+  #{{ROOT}} .noibu-count-track { display:none; }
+  #{{ROOT}}[data-noibu-workflow="segment-analysis"] .noibu-kpis { grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr)); }
+}

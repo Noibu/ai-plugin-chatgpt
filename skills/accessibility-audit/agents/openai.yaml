@@ -1,0 +1,11 @@
+interface:
+  display_name: "Accessibility Audit"
+  short_description: "Scan or review pages with explicit coverage limits"
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "noibu"
+      description: "Authenticated Noibu analytics and controlled actions"
+      transport: "streamable_http"
+      url: "https://mcp.noibu.com/mcp"

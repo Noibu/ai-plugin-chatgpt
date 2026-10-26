@@ -1,0 +1,44 @@
+<div id="{{ROOT}}" class="noibu-board">
+  <style>
+    {{STYLE}}
+  </style>
+  <p class="noibu-summary">{{SUMMARY}}</p>
+  <section class="noibu-overview">
+    <header class="noibu-report-heading"><h2>{{TITLE}}</h2><span>{{DOMAIN}} · {{WINDOW}}</span></header>
+    <div class="noibu-overview-content">
+      {{KPIS}}
+      {{FUNNEL}}
+      {{HIGHLIGHTS}}
+      {{TABLES}}
+    </div>
+  </section>
+  {{FINDINGS}}
+  {{EXPERIMENTS}}
+  {{CAVEATS}}
+  <section class="noibu-actions"><h3>Save & schedule</h3><div class="viz-row" aria-label="Report actions">{{ACTIONS}}</div></section>
+  <p class="noibu-generated">Generated {{GENERATED}} · Evidence snapshot</p>
+  <form data-noibu-schedule hidden>
+    <h3>Schedule this report</h3>
+    <div class="noibu-schedule-grid">
+      <label class="form-label">Frequency<select name="frequency" class="form-select"><option value="daily">Every day</option><option value="weekdays">Weekdays</option><option value="weekly">Weekly</option></select></label>
+      <label class="form-label" data-weekday hidden>Day<select name="weekday" class="form-select"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option></select></label>
+      <label class="form-label">Time<input name="time" class="form-control" type="time" value="09:00" required></label>
+      <label class="form-label">Timezone<input name="timezone" class="form-control" placeholder="Area/City" required></label>
+      <label class="form-label">Delivery<select name="delivery" class="form-select"><option value="chatgpt">ChatGPT</option><option value="email">Email · choose connected provider</option><option value="slack">Slack</option><option value="connected-app">Other connected email or messaging app</option></select></label>
+      <label class="form-label" data-provider hidden>App or sender account (optional)<input name="provider" class="form-control" maxlength="100" placeholder="Gmail, Outlook, Teams, or choose in chat"></label>
+      <label class="form-label" data-destination hidden>Recipient or channel<input name="destination" class="form-control" maxlength="300" placeholder="Email address, person, or channel"></label>
+      <label class="form-label">Report detail<select name="detail" class="form-select"><option value="summary">Summary</option><option value="full">Full analysis</option></select></label>
+    </div>
+    <p class="text-small">ChatGPT checks connected apps, sending access and the exact recipient during setup. These options are not connection-status indicators. No schedule exists until ChatGPT confirms it; no test message is sent by this form.</p>
+    <div class="viz-row"><button type="submit" class="btn btn-primary">Set up schedule</button><button type="button" class="btn" data-cancel-schedule>Cancel</button></div>
+  </form>
+  <p data-noibu-status role="status" aria-live="polite"></p>
+  <div data-noibu-fallback hidden>
+    <label class="form-label">Paste this request into ChatGPT<textarea class="form-control noibu-prompt" rows="8" readonly data-noibu-prompt></textarea></label>
+  </div>
+  <script type="application/json" data-noibu-model>{{MODEL}}</script>
+  <script>
+  {{CONTROLLER}}
+  bindNoibuPresentation(document.getElementById('{{ROOT}}'));
+  </script>
+</div>

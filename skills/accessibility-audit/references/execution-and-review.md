@@ -1,0 +1,61 @@
+# Audit execution setup and limited browser review
+
+Use this before choosing the audit mode. An accessibility audit request authorizes inspection of the selected pages, not security-setting changes, hidden execution channels or a different scanner deployment.
+
+## Choose from actual capabilities
+
+1. Discover the browser and read its current API documentation and advertised capabilities. Distinguish navigation/screenshots/accessibility-tree inspection, read-only DOM evaluation, and approved page-script execution returning awaited results. Tool names, extension installation and a setting's label alone do not establish the last capability.
+2. If actual approved page-script execution is exposed, follow [axe scanning](scan-and-findings.md). If a completed export is supplied, validate its URL/state, timestamp, engine/options and violations/incomplete arrays, then use that evidence with its original provenance; importing a file is not a fresh browser scan. A raw standard axe result can be wrapped as one COMPLETED page only when its actual URL and completed result arrays are present. Missing metadata is unknown, not invented.
+3. If only read-only evaluation is exposed, **do not run axe there**. Explain the specific boundary and the user-controlled setup below. Unless the user requested axe-only output, continue with an explicitly labelled **limited browser-based accessibility review** of authorized rendered pages while automated scanning remains pending. Manual review is a supplement, not a substitute labelled as axe. If no browser inspection is available, retain the selected scope and explain that neither scan nor browser review completed.
+
+Record the mode and actual capability evidence in the report. A blocked automated scan must keep unknown scanner counts, even when manual observations exist. Do not retry the same unsupported evaluator on every page or repeatedly refetch the traffic list to discover the same prerequisite.
+
+## User-controlled setup for automated axe in desktop
+
+For Chrome, explicitly check: **official ChatGPT Chrome extension connected**, **full CDP enabled if organization policy permits**, and **specific website/debugging approval granted through the native flow**. Track each as verified, user-confirmed, pending or unavailable, rather than claiming to have inspected a setting you cannot read. Do not repeatedly ask for already established prerequisites. A capability listing is not a website approval; permission requests stay user-controlled.
+
+Official guidance currently places the control at **ChatGPT desktop → Settings → Browser → Developer mode → Enable full CDP access**. The Chrome path also needs the supported ChatGPT browser extension; use `@Browser` or `@Chrome` as appropriate. This is Browser Developer mode, not the similarly named MCP/plugin developer mode.
+
+Explain that full CDP exposes sensitive browser internals. The user must deliberately enable an allowed setting and approve the specific website/task through the native flow. Never toggle it automatically, edit managed restrictions or suggest disabling approval controls. If the organization disables the setting, it cannot be enabled locally. Terminal sandbox/network settings and selecting Custom do not grant this browser capability.
+
+After the user changes the setting, rediscover capabilities in the intended audit session. Use only the newly documented, explicitly approved page-execution interface; do not invent `cdp`, `executeScript`, `addScriptTag`, `evaluateUnsafe` or similar methods. If no such interface is exposed, say so even if the switch is on. No shell-launched browser, raw CDP connection, DevTools-console typing, bookmarklet, injected WebMCP tool or alternate provider is an automatic workaround for a denied browser operation. A new independently authorized scanner integration is a separate design choice.
+
+Resume the existing selected URL list and traffic window; do not rerun Noibu queries unless the user asks for refreshed scope or the evidence is no longer appropriate. Inspect the final URL/state and rescan only the needed pages. Keep manually reviewed, axe-scanned, failed and untouched page counts separate. A fresh chat may be necessary if the host doesn't refresh tools, but it must recover the scope instead of inventing new measurements.
+
+## Readiness and approved execution probe
+
+Use serial operations on the selected tab; do not overlap navigation, readiness checks and CDP commands. Prefer a dedicated audit tab; if Browser Use has left navigation/response handling pending, use the same browser's normally loaded authorized tab or ask the user to finish opening it. Do not close a user tab or reuse a tab containing unsaved work.
+
+1. Read the actual browser/tab capability documentation, including `cdp` only if advertised. Never invent a capability or use a separate raw CDP connection.
+2. Verify the intended final URL and rendered state using supported normal browser operations. If the documented API exposes it, call `tab.playwright.waitForLoadState({state: "load"})` before the execution probe. A load event is not proof that lazy images, recommendations or all interaction states are ready; inspect those states separately for scan coverage. Do not accept cookies, authenticate, dismiss security warnings or alter carts merely to make the test pass.
+3. Through the advertised, documented and approved execution capability only, run a minimal read-only probe. When that capability documents CDP `send`, the tested expression is `({url: location.href, readyState: document.readyState})` in `Runtime.evaluate`, with `returnByValue: true` and `awaitPromise: true`. Use the exact actual API rather than assuming every host exposes this signature. Inspect exception/error fields, actual URL and readiness; a resolved tool call alone is not probe success. Record operation, elapsed time and result. Allow normal native approval time; do not infer failure from a short delay or impose an arbitrary sub-second timeout.
+4. Only after the probe succeeds and scanner execution is approved, load the pinned engine and run the scan. Never inject axe in the read-only Playwright evaluator. Record engine checksum/version, options, time, viewport and relevant visible/loading/preview state. Remove only the temporary engine loaded by this workflow, or reload/close its dedicated tab after exporting the result; do not remove a site-owned axe object.
+
+## Classify failures before suggesting a fix
+
+- **Capability absent/read-only only:** no approved execution API is exposed. Explain what is missing; check allowed setup once rather than trying hidden routes.
+- **Approval pending or access explicitly denied:** wait for the native user decision or report the precise denial. Do not call it temporary, retry to evade it or change permissions.
+- **Paused document response:** the exact error `Raw CDP is unavailable while Browser Use is resolving a paused document response` is an execution-state blocker, not proof of missing CDP permissions or an axe incompatibility. Preserve the error. Read current troubleshooting guidance, finish normal navigation/readiness through supported browser operations, inspect the page and make at most one bounded retry after an observable readiness change. If no readiness recovery is possible or the error repeats, stop that scan and report CDP advertised / execution blocked / axe not run. Do not force intercepted responses to continue, disable request handling, start competing browser tasks, use shell/console/bookmarklets or switch providers to bypass the guard.
+- **Disconnected/stale session or execution exception:** follow the documented recovery for that actual error; preserve completed evidence. Do not label every failure as a missing permission or fabricate a setting change.
+
+A successful readiness/probe sequence is a supported test path, not proof that a load wait alone caused recovery. If the user requests an execution-only test, do not substitute a limited review. Report prerequisites, readiness, probe, engine load and completed scan as separate outcomes.
+
+## Limited review using permitted browser operations
+
+Use the browser's rendered accessibility/DOM snapshot, screenshots and supported read-only DOM inspection. The packaged [DOM observation expression](../scripts/observe-page.js) is optional: it only returns bounded facts, not an axe result, accessibility-tree name computation, severity or WCAG verdict. Load its source and pass it only to an API explicitly permitting read-only DOM inspection. If that operation is unavailable or blocked, use native snapshots/screenshots and state the narrower coverage; do not try another execution route to bypass a denial.
+
+Inspect each selected page/state through actual rendered evidence; the top-page list alone is not a review. Record final URL, time, viewport/state, evidence source, inspected controls and unchecked areas. Safe navigation and ordinary non-destructive UI inspection are in scope; personal information, checkout submission, cart changes, sign-in and security changes need their applicable authorization. Keyboard testing is recorded only when actually performed through supported controls. Do not claim screen-reader testing from an accessibility snapshot.
+
+Useful checks include page title/language, heading/landmark structure, visible text alternatives, observed names/labels and instructions for interactive controls, and keyboard focus/order/obstruction where tested. Interpret carefully: no `aria-label` does not prove an unnamed control; associated labels, referenced text, content and native semantics can supply its name. A title/placeholder is not automatically a sufficient label. Empty alt can be correct for decorative imagery. Missing H1, duplicate links or an unusual heading order is not by itself a confirmed WCAG failure. Screenshots alone do not prove programmatic names, keyboard behavior, exact contrast or hidden-frame/shadow-root coverage.
+
+For each check use **issue observed**, **needs verification**, **not observed in inspected state**, or **not tested**. Confirm a manual issue only from cited evidence and explain its user impact and verification step. A screenshot-based concern without corroborating semantic/measurement evidence stays needs-verification. Assign a manual priority only when justified; leave uncertain impact unknown. Do not turn DOM observations into violations automatically or count traffic as affected users. Repeated shared-component pooling requires actual component verification.
+
+## Output and persistence
+
+Use [report guidance](report.md). Label “Browser-based accessibility review — axe not run” prominently. Show automated scan count zero and all automated severity counts unknown; show reviewed/unreviewed/failed pages and observed/manual-review findings separately. Never send review observations to the axe `build_report.py` as fake `violations`.
+
+When file execution is available, [the review report helper](../scripts/build_review.py) validates `noibu.accessibility-review/1` evidence and exports an escaped HTML report plus JSON, independently of axe. Each reviewed page needs an inspection timestamp and checks; a confirmed issue needs evidence, source, target and recommendation. The helper validates the evidence contract, not whether the underlying observation is true. Without file execution, present the same distinctions inline. If some pages have actual axe findings, keep their automated report separate and report the combined scope without treating manual-only pages as scanned.
+
+Scheduling must declare its mode and inspect the future runtime's browser/execution availability. A successful interactive scan or manually enabled setting does not prove unattended axe access. Do not silently downgrade a scheduled axe-only audit to a manual/DOM review or send old findings as fresh. Investigation/fix actions retain the existing GitHub connection and separate write authorization.
+
+Official sources: [Browser Developer mode](https://learn.chatgpt.com/docs/browser#developer-mode), [developer settings](https://learn.chatgpt.com/docs/developer-settings), [managed configuration](https://learn.chatgpt.com/docs/enterprise/managed-configuration).
