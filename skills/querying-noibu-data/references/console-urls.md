@@ -32,4 +32,6 @@ The Noibu console lives at `https://console.noibu.com`. When the user pastes a c
 
 The [link helper](../scripts/console_links.py) validates HTTPS console destinations against the selected domain and builds only the documented A/B/performance routes above: `python <shared-skill>/scripts/console_links.py --domain-id <resolved UUID> --kind ab-test --resource <actual numeric test id>`. It makes no request and cannot verify existence/account access; preserve provenance from the actual result. Issue and replay links retain their returned-URL-only rules above; replay jazzUrl values on another supported host do not use this console-only helper.
 
+Open every link (Noibu issue/replay/test, PRs, tickets) in the user's own browser, not ChatGPT's in-app browser: in rendered reports `actions.js` calls `window.openai.openExternal`; in chat, give the full HTTPS URL as a normal link. <!-- ADDED: shared rule that all skills inherit via this reference -->
+
 Links are navigation, not actions. Validate HTTPS, expected host, matching domain/resource and absence of credentials; do not expose token/secret-bearing URLs. Do not claim a link was opened or verified unless it was. A timeout is not confirmed creation: reconcile existing objects before returning a draft confirmation/link.

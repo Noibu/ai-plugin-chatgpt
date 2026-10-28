@@ -2,6 +2,10 @@
 function bindNoibuPresentation(root) {
   if (!root || root.dataset.noibuBound) return;
   root.dataset.noibuBound = 'true';
+  root.addEventListener('click', (e) => { // ADDED: one delegated click handler covers every link in the report
+    const a = e.target.closest('a[href^="https://"]'); // ADDED: only external HTTPS links (skips #anchors and download blobs)
+    if (a && !a.hasAttribute('download') && window.openai?.openExternal) { e.preventDefault(); window.openai.openExternal({href: a.href}); } // ADDED: open in user's real browser; if the host lacks openExternal, the normal link still works
+  });
   const model = JSON.parse(root.querySelector('[data-noibu-model]').textContent);
   const status = root.querySelector('[data-noibu-status]');
   const fallback = root.querySelector('[data-noibu-fallback]');
