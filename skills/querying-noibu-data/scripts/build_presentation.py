@@ -160,7 +160,7 @@ def action(data, kind, target=None):
         if kind == 'draft-pr':
             require(all(f.get('ownership') not in {'merchant-content', 'vendor'} and f.get('category') != 'vendor' for f in data.get('findings', []) if f['id'] in batch_ids), 'Batch PR includes a content/vendor handoff')
     if finding and finding.get('category') != 'vendor' and (kind in {'get-fix', 'draft-pr'} or kind == 'investigate' and technical) or batch_ids and kind == 'draft-pr':
-        result['execution'] = {'route': 'github-source', 'connection': 'reuse-or-prompt', 'repository': 'resolve-or-ask', 'mode': 'read-only'}
+        result['execution'] = {'route': 'source-access', 'sources': ['shopify-theme-via-noibu', 'code-host-connector'], 'connection': 'verify-before-fix-or-prompt', 'repository': 'resolve-or-ask', 'withoutSource': 'diagnosis-hint-and-connect-step', 'mode': 'read-only'}
     elif kind == 'save-dashboard':
         result['execution'] = {'route': 'persistent-site', 'dataMode': 'persistent-snapshot', 'completion': 'published-persisted-or-specific-blocker', 'reuseExisting': True, 'audience': 'private-preserve-existing', 'schedule': 'offer-weekly-confirm-details', 'permissions': 'preflight-native-or-guide'}
     elif kind == 'schedule':
@@ -327,8 +327,9 @@ def render(data, candidates=None, standalone=False):
     for n, item in enumerate(data.get('findings', []), 1):
         target = {'findingId': item['id']}
         performance = item.get('performance')
-        controls = '' if performance else button('Investigate ↗', 'investigate', target)
-        if data['workflow'] in {'tech-diagnosis', 'accessibility-audit'} or performance:
+        vendor = item.get('category') == 'vendor'
+        controls = '' if performance or vendor else button('Investigate ↗', 'investigate', target)
+        if (data['workflow'] in {'tech-diagnosis', 'accessibility-audit'} or performance) and not vendor:
             controls += button('Get fix ↗' if performance else 'Get fix', 'get-fix', target)
             if performance:
                 controls += button('Investigate ↗', 'investigate', target)
@@ -388,8 +389,8 @@ def render(data, candidates=None, standalone=False):
         audit_actions += button('Auto-create tickets', 'create-ticket', {'findingIds': [f['id'] for f in ticket_scope]})
         scope_text = '<p>Tickets: ' + escape('; '.join(f['title'] for f in ticket_scope)) + '.</p>'
         if pr_scope:
-            scope_text += '<p>PR review: ' + escape('; '.join(f['title'] for f in pr_scope)) + '. Source/ownership verification and GitHub connection are required before a draft PR can be created.</p>'
-        findings.append('<section class="noibu-finding"><h3>Draft GitHub PRs or open tickets for these top findings?</h3>' + scope_text + '<div class="viz-row">' + audit_actions + '</div></section>')
+            scope_text += '<p>PR review: ' + escape('; '.join(f['title'] for f in pr_scope)) + '. Source/ownership verification and a connected source (code host or Shopify theme via Noibu) connection are required before a draft PR can be created.</p>'
+        findings.append('<section class="noibu-finding"><h3>Draft fixes or open tickets for these top findings?</h3>' + scope_text + '<div class="viz-row">' + audit_actions + '</div></section>')
     save = button('Save as Live Site', 'save-dashboard', primary=True) if data['workflow'] in ANALYTICS else ''
     controls = ('' if outlined else save) + button('Save to ChatGPT Pages', 'save-report', primary=data['workflow'] not in ANALYTICS) + button('Download Report', 'export-report')
     controls += render_links(data.get('noibuLinks', []))

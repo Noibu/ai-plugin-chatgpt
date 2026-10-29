@@ -185,7 +185,7 @@ def create_pdf(summary, output):
         example = finding['instances'][0]
         if example.get('html'):
             story += [p('Example HTML (escaped evidence)', 'AuditH3'), p(example['html'], 'AuditCode')]
-        story += [p('Suggested fix', 'AuditH3'), p(finding.get('suggestedFix', 'No verified remediation supplied. Inspect the component and owner before changing source.')), p('Verification', 'AuditH3'), p(finding.get('verification', 'Rerun the relevant check and manually verify the affected control and assistive-technology behavior.'))]
+        story += [p('What needs to change', 'AuditH3'), p(finding.get('suggestedFix', 'Not yet described. Use Get fix with your code connected for the exact change.')), p('Verification', 'AuditH3'), p(finding.get('verification', 'Rerun the relevant check and manually verify the affected control and assistive-technology behavior.'))]
         story += [p('Scanned / reviewed pages affected', 'AuditH3'), affected_pages(finding['pages'])]
         story.append(Spacer(1,14))
     story += [p('Manual-review checks and limitations', 'AuditH2'), p('Incomplete checks are not confirmed violations. Unscanned pages are not clean; frame, hidden-state, keyboard and assistive-technology coverage require explicit verification.')]

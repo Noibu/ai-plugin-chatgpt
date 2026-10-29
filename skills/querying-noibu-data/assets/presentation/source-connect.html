@@ -1,0 +1,47 @@
+<div id="{{ROOT}}" class="noibu-board noibu-source-connect">
+  <style>
+    {{STYLE}}
+    #{{ROOT}} .noibu-sc-facts { display:grid; grid-template-columns:minmax(7rem,max-content) 1fr; gap:.6rem 1.25rem; margin:0; }
+    #{{ROOT}} .noibu-sc-facts dt { color:var(--noibu-secondary); }
+    #{{ROOT}} .noibu-sc-facts dd { margin:0; }
+    #{{ROOT}} .noibu-sc-option { margin-top:1rem; padding:1.1rem 1.25rem; border:1px solid var(--noibu-rule); border-radius:1rem; background:var(--background); }
+    #{{ROOT}} .noibu-sc-option h4 { margin:0 0 .5rem; font-size:1em; }
+    #{{ROOT}} .noibu-sc-option ol { margin:.25rem 0 1rem; padding-left:1.25rem; }
+    #{{ROOT}} .noibu-sc-option li { margin-bottom:.5rem; }
+    #{{ROOT}} .noibu-sc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(11rem,1fr)); gap:.75rem; margin-bottom:.9rem; }
+    #{{ROOT}} .noibu-sc-link { margin-top:.5rem; }
+    #{{ROOT}} .noibu-sc-wide { grid-column:1 / -1; }
+    #{{ROOT}} .noibu-sc-link a { text-decoration:none; }
+    #{{ROOT}} code { font-size:.92em; }
+    @media (max-width:520px) { #{{ROOT}} .noibu-sc-facts { grid-template-columns:1fr; gap:.15rem; } #{{ROOT}} .noibu-sc-facts dd { margin-bottom:.6rem; } }
+  </style>
+  <section class="noibu-finding">
+    <div class="noibu-finding-heading"><span class="noibu-tag">What we know</span><span class="noibu-impact">{{DOMAIN}}</span></div>
+    <h3>{{TITLE}}</h3>
+    <dl class="noibu-sc-facts">
+      <dt>What's happening</dt><dd>{{HAPPENING}}</dd>
+      <dt>Where it points</dt><dd>{{POINTSTO}}</dd>
+      <dt>Likely cause</dt><dd><strong>Hypothesis:</strong> {{HYPOTHESIS}}</dd>
+    </dl>
+  </section>
+  <section class="noibu-finding">
+    <h3>Get the complete fix</h3>
+    <p>{{INTRO}}</p>
+    {{SHOPIFY}}
+    <div class="noibu-sc-option">
+      <h4>{{CODEHOSTHEADING}}</h4>
+      {{CODEHOSTNOTE}}
+      {{CODEHOSTBODY}}
+    </div>
+  </section>
+  <section class="noibu-actions"><h3>Can't connect the code?</h3><p class="noibu-secondary">Send the evidence to your developers instead. Nothing is created until you choose where it goes.</p><div class="viz-row">{{TICKET}}</div></section>
+  <p data-noibu-status role="status" aria-live="polite"></p>
+  <div data-noibu-fallback hidden>
+    <label class="form-label">Paste this request into ChatGPT<textarea class="form-control noibu-prompt" rows="8" readonly data-noibu-prompt></textarea></label>
+  </div>
+  <script type="application/json" data-noibu-model>{{MODEL}}</script>
+  <script>
+  {{CONTROLLER}}
+  bindNoibuSourceConnect(document.getElementById('{{ROOT}}'));
+  </script>
+</div>

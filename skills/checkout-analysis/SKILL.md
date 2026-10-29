@@ -29,7 +29,7 @@ Use the packaged [inline presentation](../querying-noibu-data/references/present
 ## Follow-ups
 
 - Preserve the tested light dashboard, **Save as Live Site** beneath dashboard content, investigation cards, and separate final Pages/download/scheduling controls.
-- Investigate reuses the selected evidence; technical findings use the [GitHub handoff](../tech-diagnosis/references/github-handoff.md), not ordinary UX/operations analysis.
+- Investigate reuses the selected evidence; technical findings use [source access](../querying-noibu-data/references/source-access.md) for any fix, not ordinary UX/operations analysis.
 - Site saves follow [persistent dashboards](../querying-noibu-data/references/connected-dashboard.md) and [permission preflight](../querying-noibu-data/references/site-permissions.md), including the confirmed weekly-refresh offer.
 - Scheduling follows [connected delivery](../querying-noibu-data/references/scheduling-delivery.md), with fresh rolling comparisons; exports reuse evidence unless refresh is requested.
 - Issue/status changes require an explicit request, exact issue and supported status. Analysis/rendering authorizes no writes.

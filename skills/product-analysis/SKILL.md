@@ -32,6 +32,6 @@ Use the packaged [inline presentation](../querying-noibu-data/references/present
 
 ## Follow-ups
 
-- Reuse evidence for Investigate and exports. Route technical causes to tech-diagnosis and its [GitHub handoff](../tech-diagnosis/references/github-handoff.md); normal analysis does not require a repository.
+- Reuse evidence for Investigate and exports. Route technical causes to tech-diagnosis and [source access](../querying-noibu-data/references/source-access.md); normal analysis does not require source.
 - Site saves use [persistent dashboards](../querying-noibu-data/references/connected-dashboard.md) and [permission preflight](../querying-noibu-data/references/site-permissions.md), including the confirmed weekly-refresh offer.
 - **Schedule Insights** uses [shared connected delivery](../querying-noibu-data/references/scheduling-delivery.md) with fresh product scope, rolling windows and comparison rules. Daily is not offered here.
