@@ -19,6 +19,8 @@ Vendor- or platform-owned findings never need source: they get the vendor handof
 
 ## Resolve the source
 
+**Every check is fresh.** Users often install or connect GitHub, Bitbucket or another code host in the middle of the conversation, after you last looked. On every Get fix click, card click or fix request, re-run the connection check from scratch: look for code-host tools again and, if none are visible, use the host's plugin discovery or connection check, the same check you would run if the user asked "is GitHub connected?". Never reuse an earlier "not connected", "no tools" or failed result from this conversation. Only a source that was verified as readable may be reused.
+
 Stop at the first step that verifies.
 
 1. Recover the selected finding, domain UUID and `numId`, platform, stack/metric evidence and window from the conversation. Do not re-run the survey.
