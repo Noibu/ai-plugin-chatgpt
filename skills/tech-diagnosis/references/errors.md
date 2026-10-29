@@ -2,7 +2,7 @@
 
 Classify frames against the matching platform reference, using only actual paths and inspected ownership. Session-specific user-provided ownership overrides can refine the classification; no home-directory config is required.
 
-Merchant code can support a fix recommendation; platform code needs a platform/vendor path; telemetry-only errors are not automatically user-facing failures. Reactive vendor issues remain useful findings even when the merchant cannot edit that code. Missing stack frames limit confidence; do not discard an explicitly requested issue without explaining that limitation.
+Merchant code is fixable once source is connected ([source access](../../querying-noibu-data/references/source-access.md)); platform code needs a platform/vendor path; telemetry-only errors are not automatically user-facing failures. Reactive vendor issues remain useful findings even when the merchant cannot edit that code. Missing stack frames limit confidence; do not discard an explicitly requested issue without explaining that limitation.
 
 Prefer root-cause fixes. A generic try/catch or null guard must not be advertised as the root-cause fix when it merely suppresses the symptom. Consent-related short recordings may indicate an observability gap, not a prevented purchase.
 

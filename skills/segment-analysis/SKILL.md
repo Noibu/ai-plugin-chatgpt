@@ -35,6 +35,6 @@ Use the packaged [inline presentation](../querying-noibu-data/references/present
 
 ## Follow-ups
 
-- Investigate retains the selected evidence. Route genuine technical findings to tech-diagnosis and its [GitHub handoff](../tech-diagnosis/references/github-handoff.md), not ordinary marketing findings.
+- Investigate retains the selected evidence. Route genuine technical findings to tech-diagnosis and [source access](../querying-noibu-data/references/source-access.md), not ordinary marketing findings.
 - Site saves use [persistent dashboards](../querying-noibu-data/references/connected-dashboard.md) and [permission preflight](../querying-noibu-data/references/site-permissions.md), including the confirmed weekly-refresh offer.
 - **Schedule Insights** uses [shared connected delivery](../querying-noibu-data/references/scheduling-delivery.md), fresh rolling scope and the confirmed equal-half/other baselines. Daily is not offered here.

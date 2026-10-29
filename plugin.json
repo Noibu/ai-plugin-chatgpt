@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "noibu",
-  "version": "1.2.0",
+  "version": "1.2.7",
   "description": "Analyze ecommerce conversion, shopper behavior, errors, and experiments using Noibu data.",
   "author": {
     "name": "Noibu",
@@ -24,7 +24,7 @@
       "interface": {
         "displayName": "Noibu",
         "shortDescription": "Ecommerce insights and fixes",
-        "longDescription": "Connect Noibu to analyze store health, checkout, products, traffic segments, technical issues, and A/B opportunities. Includes native in-chat KPI/funnel and priority-board templates with investigation, save, export, schedule, context-approval, and selected A/B draft actions through ChatGPT. Save as Live Site publishes the verified report into a private Site with durable snapshot history; live data connections and scheduled updates are separate options requiring their own verification. Technical, accessibility, performance and implementation fixes reuse GitHub or prompt connection and repository selection; source writes and PRs need separate authorization. Missing visualization or host-action support falls back to useful reports and copyable requests. Analytics and requested drafts use the remote MCP connection. Browser accessibility auditing uses bundled axe-core with approved desktop/Chrome execution and returns findings directly without a server reader. Visual previews are optional and their omission is explained. Native scheduled reports, Site publishing, repository changes, and external delivery require the actual available tools and appropriate authorization.",
+        "longDescription": "Connect Noibu to analyze store health, checkout, products, traffic segments, technical issues, and A/B opportunities. Includes native in-chat KPI/funnel and priority-board templates with investigation, save, export, schedule, context-approval, and selected A/B draft actions through ChatGPT. Save as Live Site publishes the verified report into a private Site with durable snapshot history; live data connections and scheduled updates are separate options requiring their own verification. Technical, accessibility, performance and implementation fixes are written from the store's real code: the Shopify theme through Noibu or a connected code host (GitHub, GitLab, Bitbucket and others) with a recognized repository and branch. Without it, Get fix gives the diagnosis and a connect step instead of a generic fix. Source writes, PRs and theme previews need separate authorization. Missing visualization or host-action support falls back to useful reports and copyable requests. Analytics and requested drafts use the remote MCP connection. Browser accessibility auditing uses bundled axe-core with approved desktop/Chrome execution and returns findings directly without a server reader. Visual previews are optional and their omission is explained. Native scheduled reports, Site publishing, repository changes, and external delivery require the actual available tools and appropriate authorization.",
         "developerName": "Noibu",
         "category": "Productivity",
         "capabilities": [

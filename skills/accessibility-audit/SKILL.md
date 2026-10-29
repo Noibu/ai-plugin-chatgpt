@@ -36,10 +36,10 @@ The built-in browser is a separate option without Chrome-extension requirements.
 - Pool confirmed shared-component findings by rule/criterion plus stable selector. Keep per-page nodes and count affected pageviews once per unique page.
 - Rank severity weight × log10(max(1, affected pageviews)) × min(2, 1 + 0.2 × affected page count). Missing traffic stays unknown; incomplete checks are verification items, not violations.
 - Report distinct violated rules, affected page/target elements, raw rule/node instances, pooled fixes and incomplete checks separately, with completed/failed/unscanned pages and rendered states.
-- Follow [report format](references/report.md): verified PDF attachment, concise summary from the same normalized evidence, severity/fix table and top finding. Preserve its legal text/disclaimer exactly; automated checks do not certify compliance.
+- Follow [report format](references/report.md): verified PDF attachment, concise summary from the same normalized evidence, a severity table with what needs to change for each finding (plain words, no code) and the top finding. Preserve its legal text/disclaimer exactly; automated checks do not certify compliance.
 - Keep iframe/shadow-root/hidden-state/manual limits visible; unreviewed pages are not clean. Limited/blocked reports retain unknown axe counts, including in PDFs.
 - Use [inline presentation](../querying-noibu-data/references/presentation.md) for **Auto-draft PR** / **Auto-create tickets**, visibly scoped to actual top finding IDs. [Remediation actions](references/remediation-actions.md) resolve connections/destinations after selection; rendering creates nothing.
-- Investigate/Get fix/source remediation uses [GitHub handoff](../tech-diagnosis/references/github-handoff.md). Preserve completed audit evidence while connection/ref/ownership verification is pending; vendor/managed components need owner handoff. Scanning/reporting does not require GitHub.
+- Investigate/Get fix/source remediation uses [source access](../querying-noibu-data/references/source-access.md): no code-level fix without connected source. Preserve completed audit evidence while connection/ref/ownership verification is pending; vendor/managed components need owner handoff. Scanning/reporting does not require source.
 
 ## Recurrence
 

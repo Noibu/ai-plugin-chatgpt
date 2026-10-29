@@ -34,7 +34,7 @@ Use [the deliverables builder](../scripts/build_deliverables.py) with actual fin
 python <audit-skill>/scripts/build_deliverables.py <task-output>/findings.json --output-dir <task-output>/audit
 ```
 
-Read the resulting stable finding IDs. Optionally supply `--annotations <task-output>/annotations.json`, a mapping from actual IDs to explanation, suggestedFix, verification, criterion, criterionUrl and ownership (merchant-code/merchant-content/vendor/unknown). These are evidence-based analyst annotations, not scanner output or a way to alter severity/counts. Preserve actual help/criterion provenance and label proposed fixes unverified until source inspection. Never invent criteria, contrast values, selectors or ownership.
+Read the resulting stable finding IDs. Optionally supply `--annotations <task-output>/annotations.json`, a mapping from actual IDs to explanation, suggestedFix (shown as **What needs to change**: what the flagged element needs, in plain words, such as "This button needs an accessible name"; no code, markup, file or line references unless source was verified in this conversation, because the code change comes from Get fix), verification, criterion, criterionUrl and ownership (merchant-code/merchant-content/vendor/unknown). These are evidence-based analyst annotations, not scanner output or a way to alter severity/counts. Preserve actual help/criterion provenance and label proposed fixes unverified until source inspection. Never invent criteria, contrast values, selectors or ownership.
 
 Then generate the full outputs:
 

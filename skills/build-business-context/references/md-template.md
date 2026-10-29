@@ -100,7 +100,7 @@ as hypotheses to validate, not confirmed facts.]
 - **Checkout:** [native or customized — note risk level].
 - **Payments:** [processor], [vaulting provider].
 - **Key apps:** [reviews, search, loyalty, subscriptions, analytics, CDP].
-- **Code access:** [is the repo connected to ChatGPT? GitHub connector?].
+- **Source code:** [<provider> — <owner/repo> @ <branch>, or Shopify theme via Noibu (live theme). Get fix reads this first.]
 
 ### Change-risk rule
 

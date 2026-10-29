@@ -18,7 +18,7 @@ Normalize response units before comparisons: Noibu's tested LCP/FCP/TTFB values 
 
 Use the shared native renderer with findings category performance and a performance object for measured p75 INP/LCP/CLS. Match the requested metric-header card, plain-language title/evidence, large value, green/amber/red labelled threshold bar with measured marker, actual traffic/page/group/device/window and Get fix ↗. Include the exact relevant Noibu destination using shared console link guidance. Metric overview links are not filtered page deep links.
 
-Normalize INP/LCP to ms, CLS to score; include percentile p75, and traffic count with its measured unit. Unknown values remain null and get no marker/verdict. Never invent Active or affected-user counts to match the screenshot. State shared-template causes as hypotheses unless verified. Examples in previews are synthetic, not findings. Retain proposed fix/verification in the response and existing GitHub handoff for source inspection.
+Normalize INP/LCP to ms, CLS to score; include percentile p75, and traffic count with its measured unit. Unknown values remain null and get no marker/verdict. Never invent Active or affected-user counts to match the screenshot. State shared-template causes as hypotheses unless verified. Examples in previews are synthetic, not findings. Get fix ↗ follows [source access](../../querying-noibu-data/references/source-access.md): no fix without connected source.
 
 Sources for the three CWV bands: [Google's threshold definitions](https://web.dev/articles/defining-core-web-vitals-thresholds). Native Page snapshots follow [official OpenAI Pages guidance](https://learn.chatgpt.com/docs/space/pages), not Site publishing.
 
@@ -36,7 +36,7 @@ Sources for the three CWV bands: [Google's threshold definitions](https://web.de
 
 The Noibu performance console shows element-level detail for INP (via the `id=` parameter in the console URL) but this is not exposed through the MCP tools — it requires navigating to the console in Chrome.
 
-When Chrome isn't available: use `CLICKED_SELECTORS_WITH_COUNTS` as supporting context for INP, and fall back to pattern-based recommendations for LCP and CLS element identification.
+When Chrome isn't available: use `CLICKED_SELECTORS_WITH_COUNTS` as supporting context for INP, and treat LCP/CLS element identity as a hypothesis from page patterns. A pattern is a diagnosis hint, never a substitute for a source-backed fix.
 
 ---
 
