@@ -1,5 +1,5 @@
 // Client for a private, connected Site. No provider tokens or browser-direct MCP.
-// Pair with site-report.mjs and the official Sites request-scoped server binding.
+// Pair with site-report.mjs and the request-scoped native or direct OAuth server binding.
 export function mountNoibuSite(root, {endpoint = '/api/noibu/report', fetchReport = fetch} = {}) {
   if (!/^\/api\/noibu\/[a-z0-9/-]+$/.test(endpoint)) throw new Error('Use a same-origin Noibu report endpoint');
   const doc = root.ownerDocument;
@@ -112,9 +112,10 @@ export function mountNoibuSite(root, {endpoint = '/api/noibu/report', fetchRepor
       if (!response.ok || value.status !== 'success') {
         // Only a server-generated same-origin path on a real auth condition
         // offers Connect. Generic policy/tool failures do not trigger a loop.
-        if (value.status === 'reauthentication_required' && typeof value.chatGPTSignInPath === 'string' && /^\/(?!\/)/.test(value.chatGPTSignInPath)) {
-          const path = new URL(value.chatGPTSignInPath, doc.defaultView.location.href);
-          if (path.origin === doc.defaultView.location.origin) {signIn.href = path.href; signIn.hidden = false;}
+        const signInPath = value.noibuSignInPath || value.chatGPTSignInPath;
+        if (value.status === 'reauthentication_required' && typeof signInPath === 'string' && /^\/(?!\/)/.test(signInPath)) {
+          const path = new URL(signInPath, doc.defaultView.location.href);
+          if (path.origin === doc.defaultView.location.origin) {signIn.href = path.href; signIn.textContent = value.noibuSignInPath ? 'Connect to Noibu' : 'Connect through ChatGPT'; signIn.hidden = false;}
         }
         throw new Error(value.message || 'Check sign-in, Noibu connection and Sites permissions');
       }
