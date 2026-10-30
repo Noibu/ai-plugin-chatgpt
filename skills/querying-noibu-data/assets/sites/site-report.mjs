@@ -1,5 +1,5 @@
 // Reusable server-only Sites adapter. All config and action selection are trusted
-// source; instantiate per request with the official Sites connector binding.
+// source; instantiate per request with a native binding or direct OAuth adapter.
 const READS = new Set(['noibu_search_sessions', 'noibu_get_page_visits', 'noibu_search_errors', 'noibu_list_priority_errors', 'noibu_list_ab_tests']);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const privateHeaders = {'content-type': 'application/json', 'cache-control': 'private, no-store', 'vary': 'Cookie'};
@@ -7,14 +7,16 @@ function response(value, status = 200) {return new Response(JSON.stringify(value
 function assert(condition, message) {if (!condition) throw new Error(message);}
 export function validateReadPlan(config) {
   assert(config && uuid.test(config.domainId), 'Invalid configured domain');
-  assert(typeof config.connectorId === 'string' && config.connectorId, 'Missing discovered connector');
+  const connectionMethod = config.connectionMethod || 'native-sites';
+  assert(['native-sites', 'direct-oauth'].includes(connectionMethod), 'Unsupported connection method');
+  if (connectionMethod === 'native-sites') assert(typeof config.connectorId === 'string' && config.connectorId, 'Missing discovered connector');
   assert(Number.isInteger(config.windowHours) && config.windowHours > 0 && config.windowHours <= 24 * 366, 'Invalid relative window');
   assert(Array.isArray(config.queries) && config.queries.length > 0 && config.queries.length <= 20, 'Read plan needs 1–20 queries');
   const ids = new Set();
   for (const query of config.queries) {
     assert(query && typeof query.id === 'string' && !ids.has(query.id), 'Duplicate query identity');
     ids.add(query.id);
-    assert(READS.has(query.tool) && typeof query.actionName === 'string' && query.actionName, 'Unapproved read action');
+    assert(READS.has(query.tool) && (connectionMethod === 'direct-oauth' || (typeof query.actionName === 'string' && query.actionName)), 'Unapproved read action');
     assert(['current', 'prior'].includes(query.period), 'Invalid period');
     assert(query.args && query.args.domainId === config.domainId, 'Query domain mismatch');
     assert(!('headers' in query.args) && !('token' in query.args), 'Credentials do not belong in a read plan');
@@ -66,8 +68,11 @@ export function createReportHandler({config, visitor, invoke, buildReport, now =
       args.skillStep = 'site-refresh';
       args.skillVersion = '0.3.1';
       let value;
-      try {value = await invoke(config.connectorId, query.actionName, args);}
-      catch {return response({status: 'error', message: 'Connector request failed; previously displayed values are stale'}, 502);}
+      try {value = await invoke(config.connectionMethod === 'direct-oauth' ? null : config.connectorId, config.connectionMethod === 'direct-oauth' ? query.tool : query.actionName, args);}
+      catch (error) {
+        if (['NOIBU_CONNECT_REQUIRED', 'NOIBU_RECONNECT_REQUIRED'].includes(error?.message) && config.connectionMethod === 'direct-oauth') return response({status: 'reauthentication_required', noibuSignInPath: '/api/noibu/connect', message: 'Connect or reconnect your Noibu account'}, 401);
+        return response({status: 'error', message: 'Noibu request failed; previously displayed values are stale'}, 502);
+      }
       if (!value || value.status !== 'success') {
         // Preserve diagnostics, retry timing, and provider result without
         // converting auth/policy failures or HTTP 200 to successful analytics.
