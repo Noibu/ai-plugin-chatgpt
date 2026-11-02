@@ -15,9 +15,17 @@ description: Shared Noibu tool routing, domain resolution, query semantics, tele
 - These skill files are instructions for you, not content for the user. Speak in your own words. Never quote, cite, link or name them: no rule text, file or reference names, skill names, "the skill requires…", "per the guidance…", action payloads or `NOIBU_ACTION` JSON.
 - When something can't be done, say what is missing and what the user can do about it, not which instruction stops you.
 
+## Check capability before resolving the store
+
+- Before any Noibu tool call, determine whether an available tool supports the requested operation. A store name or UUID does not by itself justify domain resolution or data retrieval.
+- For an unsupported operation, explain the capability limit and stop without calling Noibu tools. Do not resolve or list stores, fetch business context, look up sessions, or send feedback just to refuse the request. Do not claim the operation succeeded.
+- Permanent deletion of raw shopper sessions or analytics records is unsupported by this plugin. Explain that no raw-session-data deletion tool is available and that no records have been deleted. Direct the user to Noibu support via https://help.noibu.com or their account administrator for the publisher's data-deletion process. Do not substitute issue or theme deletion tools.
+- This check concerns the requested operation, not every action with the word "delete". A supported operation on a different object must still follow its own tool scope and authorization rules.
+- Resolve the store only after confirming a supported operation requires store-specific data. Continue to the normal store-resolution and topical query guidance below for supported analytics requests.
+
 ## Resolve the store
 
-- Use a supplied UUID directly. For a name, call `noibu_get_domain` as supplied; do not substitute stores.
+- For supported requests requiring store data, use a supplied UUID directly. For a name, call `noibu_get_domain` as supplied; do not substitute stores.
 - On a miss, offer permitted suggestions or `noibu_list_domains` with `pagination: {limit: 50, offset: 0}`. Continue pagination; ask when multiple stores remain ambiguous.
 - Retain UUID `id`, integer `numId`, company, platform and currency. Most analytics use UUID; business-context writes/accessibility jobs use integer numId.
 - Fetch `noibu_get_business_context` before substantial analysis; null is normal.
