@@ -19,7 +19,10 @@ def valid_url(value):
 
 
 def load_bundle(path):
-    data = json.loads(path.read_text())
+    return validate_bundle(json.loads(path.read_text()))
+
+
+def validate_bundle(data):
     required(isinstance(data, dict) and valid_url(data.get('page')), 'Missing page URL')
     scans = data.get('scans')
     index = data.get('scan_index')
