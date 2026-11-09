@@ -2,6 +2,10 @@
 
 Distinguish automated axe findings from limited browser review. Build an automated report only from completed, scoped axe findings. Report partial coverage honestly.
 
+## Imported multi-state axe bundle
+
+When an export contains a `scan_index` and `scans` mapping of original `axe.run()` objects, validate and summarize it with `scripts/import_axe_bundle.py <source.json> --output-dir <output>`. The importer writes an escaped HTML report and normalized JSON summary while the source JSON remains the full raw evidence. Report the original execution environment and date. Each scan is a page state or scoped element, not a distinct page. Keep WCAG-tagged and best-practice-only rules distinct, and count repeated node findings in each scan as node/scan instances. Incomplete results remain review items. This imported route does not prove that ChatGPT browser execution works or that the Noibu hosted crawl completed.
+
 Include:
 
 - Domain, audited URLs, selected page traffic window, scan time/version/standard, successful/failed/queued page counts.
