@@ -47,6 +47,22 @@ def example():
             'notes':['Fictional data for layout testing. No live storefront was scanned.'],'pages':pages}
 
 
+def example_annotations():
+    descriptions={
+        'svg-img-alt': ('Product image icons have no text alternative',
+                        'The scanner flagged product-card SVG images exposed without a text alternative.',
+                        'Each image needs an appropriate text alternative, or decorative treatment when its purpose is already conveyed.'),
+        'link-name': ('Gift-guide overlay link has no accessible name',
+                      'The focusable overlay links to the gift guide but has no text describing that destination.',
+                      'The link needs a meaningful accessible name describing the gift guide.'),
+        'link-in-text-block': ('Introductory text link relies on color alone',
+                               'The scanner flagged the introductory Shop rings link because its styling does not distinguish it beyond color.',
+                               'The link needs a persistent visual cue, such as an underline.'),
+    }
+    return {finding['id']:dict(zip(['title','explanation','suggestedFix'],descriptions[finding['rule']]))
+            for finding in builder.normalize(example())['findings']}
+
+
 @unittest.skipUnless(PDF_AVAILABLE, 'ReportLab and pypdf required for PDF regression checks')
 class PdfTests(unittest.TestCase):
     def render(self, summary, appendix=False):
@@ -105,6 +121,39 @@ class PdfTests(unittest.TestCase):
         self.assertIn('<b>untrusted literal text</b>',text)
         self.assertFalse(any(link.startswith('javascript:') for link in links))
 
+    def test_editorial_titles_and_manual_verification_need_evidence(self):
+        annotations=example_annotations()
+        summary=builder.normalize(example(),annotations)
+        text,_,_=self.render(summary)
+        self.assertIn('Gift-guide overlay link has no accessible name',text)
+        self.assertIn('manual reproduction pending',text)
+        key=next(iter(annotations))
+        annotations[key]['evidenceStatus']='manually-verified'
+        with self.assertRaisesRegex(ValueError,'need recorded verification evidence'):
+            builder.normalize(example(),annotations)
+        annotations[key]['verificationEvidence']='Synthetic test record; not a real assistive-technology test.'
+        text,_,_=self.render(builder.normalize(example(),annotations))
+        self.assertIn('Manually verified',text)
+        self.assertIn('Synthetic test record',text)
+
+    def test_opening_table_and_finding_introductions_stay_readable(self):
+        summary=builder.normalize(example(),example_annotations())
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'report.pdf';builder.create_pdf(summary,path)
+            reader=PdfReader(path)
+            pages=[page.extract_text() for page in reader.pages]
+            self.assertIn('Unique fixes by severity',pages[0])
+            self.assertIn('Violation instances',pages[0])
+            for hidden in ['4.14.0','12:01:00','Finding ID:','Affected elements']:
+                self.assertNotIn(hidden,pages[0])
+            for index,finding in enumerate(summary['findings'],1):
+                heading=f'{index}. {finding["title"]}'
+                opening=next(page for page in pages[1:] if heading in page)
+                self.assertIn(finding['explanation'],' '.join(opening.split()))
+            fonts=[str(ref.get_object().get('/BaseFont','')) for page in reader.pages
+                   for ref in page['/Resources']['/Font'].values()]
+            self.assertIn('/Courier',fonts)
+
     def test_imported_states_keep_original_counting_or_report_prerequisite(self):
         rule=example()['pages'][1]['violations'][0]
         scan={'url':'https://example.test/','timestamp':'2026-10-29T12:00:00Z',
@@ -123,8 +172,9 @@ class PdfTests(unittest.TestCase):
         self.assertEqual(summary['severityCounts']['serious'],2)
         text,_,_=self.render(summary)
         self.assertIn('2 completed scan states across 1 distinct page',text)
-        self.assertIn('unpooled rule/scan records',text)
-        self.assertIn('2026-10-29T12:00:00Z',text)
+        self.assertIn('unpooled rule/scan records',text.lower())
+        self.assertIn('2026-10-29',text)
+        self.assertEqual(summary['pages'][0]['scans'][0]['timestamp'],'2026-10-29T12:00:00Z')
         self.assertNotIn(builder.axe.CLAUDE_STANDARD_STATEMENT,text)
 
 

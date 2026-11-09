@@ -17,10 +17,22 @@ not real scans. The supplied Claude report is a visual reference, not test data.
 
 The default PDF has a domain/scope/date heading, applicable verbatim disclaimer,
 short executive summary, four labeled severity cards, a linked page table and
-numbered findings with criteria, selectors, escaped examples, required changes
+numbered findings with control-specific titles, underlined criterion/page links,
+monospace indented examples, bold metadata labels, required changes
 and verification. Friendly page names are derived from URLs. Source evidence
 dates are separate from the generation date. Full scanner data stays in JSON;
-`--technical-appendix` adds scan metadata and incomplete-rule references.
+`--technical-appendix` adds detailed status/rule/element/incomplete columns,
+finding IDs, scan metadata and incomplete-rule references. The opening table has
+only page, pageviews and violation instances; partial/failed scope remains visible.
+Heading, explanation and the first evidence block stay together when practical;
+continued findings get a contextual heading. Rounded severity cards share the
+text/table margins and explicitly label their counting basis.
+
+The fictional after sample uses `example_annotations()` for editorial titles and
+explanations without changing its original counts. Optional annotations also
+support potential user impact and evidence status. Manually verified labels need
+recorded verification evidence; scanner findings default to manual reproduction
+pending. PDF styling never upgrades detection into tested user behavior.
 
 ```sh
 python skills/accessibility-audit/scripts/build_deliverables.py findings.json \

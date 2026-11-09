@@ -51,9 +51,11 @@ def normalize(data, annotations=None):
     axe.require(isinstance(annotations, dict) and set(annotations) <= {f['id'] for f in summary['findings']}, 'Annotations need actual pooled finding IDs')
     for finding in summary['findings']:
         annotation = annotations.get(finding['id'], {})
-        axe.require(isinstance(annotation, dict) and set(annotation) <= {'explanation', 'suggestedFix', 'verification', 'criterion', 'criterionUrl', 'ownership'}, 'Invalid annotation fields')
+        axe.require(isinstance(annotation, dict) and set(annotation) <= {'title', 'explanation', 'userImpact', 'evidenceStatus', 'verificationEvidence', 'suggestedFix', 'verification', 'criterion', 'criterionUrl', 'ownership'}, 'Invalid annotation fields')
         axe.require(all(isinstance(v, str) and v.strip() and len(v) <= 10000 for v in annotation.values()), 'Invalid annotation text')
         axe.require(annotation.get('ownership') in {None, 'merchant-code', 'merchant-content', 'vendor', 'unknown'}, 'Invalid owner')
+        axe.require(annotation.get('evidenceStatus') in {None, 'scanner-detected', 'manually-verified'}, 'Invalid evidence status')
+        axe.require(annotation.get('evidenceStatus') != 'manually-verified' or annotation.get('verificationEvidence'), 'Manually verified findings need recorded verification evidence')
         if 'criterionUrl' in annotation:
             axe.require(axe.safe_url(annotation['criterionUrl']), 'Invalid criterion link')
         finding.update(annotation)
