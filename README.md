@@ -44,7 +44,6 @@ No API keys, CLI, or local configuration are needed; authentication is handled b
 | `segment-analysis` | Channel, device, and country performance |
 | `tech-diagnosis` | Errors and Core Web Vitals, with root cause and fixes |
 | `accessibility-audit` | WCAG 2.1 AA audit with optional fix drafts |
-| `accessibility-audit-browser-workaround` | Recover blocked scans or import completed multi-state axe evidence |
 | `ab-test-opportunity-finder` | Evidence-backed A/B test ideas and draft tests in Noibu |
 | `build-business-context` | Builds the business context file Noibu uses to reason about your store |
 | `querying-noibu-data` | Shared query guidance, presentation templates, and ChatGPT runtime rules |
