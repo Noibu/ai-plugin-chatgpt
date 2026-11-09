@@ -14,8 +14,8 @@ Include:
 
 Use the reusable `scripts/pdf_report.py` renderer through `build_deliverables.py`.
 Match the reference's editorial layout: domain/date/scope, verbatim applicable
-disclaimer, concise executive summary, four colored severity cards, readable linked
-page names, a compact coverage table, and a priority table with finding, WCAG
+disclaimer, concise executive summary, four rounded severity cards labelled by counting basis, readable underlined
+page links, a three-column page/pageviews/instances table, and a priority table with finding, WCAG
 criterion and severity. Follow with numbered finding details: affected pages and
 traffic, actual instances, criterion reference, explanation, selector, escaped HTML
 example, **What needs to change**, and verification. Keep unknown values explicit.
@@ -24,7 +24,13 @@ Do not force a fixed page count or omit findings to make a report shorter.
 The default PDF summarizes incomplete checks without dumping raw node arrays or
 scanner JSON into the narrative. Keep full evidence in the accompanying JSON;
 `--technical-appendix` adds per-page metadata and incomplete-rule references.
-Long example snippets may be labelled excerpts; full originals remain in JSON.
+Use a true monospace font for literal code, preserve indentation, and wrap long
+URLs without changing raw evidence. Long snippets may be labelled excerpts; full
+originals remain in JSON. Keep heading, explanation and first evidence block
+together when they fit; use a continuation heading when a finding spans pages.
+Move detailed count columns, finding IDs, engine/version and precise timestamps
+to the technical appendix and evidence JSON; retain partial/failed coverage in
+the overview and distinguish the evidence date from the report date.
 Keep source evidence dates separate from report generation dates, and include
 coverage limits and failed/pending pages. Styling must not alter pooling, severity,
 traffic, or the rule/element/instance/incomplete count distinctions.
@@ -62,7 +68,7 @@ Use [the deliverables builder](../scripts/build_deliverables.py) with actual fin
 python <audit-skill>/scripts/build_deliverables.py <task-output>/findings.json --output-dir <task-output>/audit
 ```
 
-Read the resulting stable finding IDs. Optionally supply `--annotations <task-output>/annotations.json`, a mapping from actual IDs to explanation, suggestedFix (shown as **What needs to change**: what the flagged element needs, in plain words, such as "This button needs an accessible name"; no code, markup, file or line references unless source was verified in this conversation, because the code change comes from Get fix), verification, criterion, criterionUrl and ownership (merchant-code/merchant-content/vendor/unknown). These are evidence-based analyst annotations, not scanner output or a way to alter severity/counts. Preserve actual help/criterion provenance and label proposed fixes unverified until source inspection. Never invent criteria, contrast values, selectors or ownership.
+Read the resulting stable finding IDs. Optionally supply `--annotations <task-output>/annotations.json`, a mapping from actual IDs to title, explanation, userImpact, evidenceStatus, verificationEvidence, suggestedFix (shown as **What needs to change**: what the flagged element needs, in plain words, such as "This button needs an accessible name"; no code, markup, file or line references unless source was verified in this conversation, because the code change comes from Get fix), verification, criterion, criterionUrl and ownership (merchant-code/merchant-content/vendor/unknown). Titles must describe the observed control or component without inventing its purpose. User impact is a potential difficulty until tested. evidenceStatus is scanner-detected or manually-verified; manually-verified requires a nonempty verificationEvidence describing an actual recorded test. A title or evidence label does not change the scanner result. These are evidence-based analyst annotations, not scanner output or a way to alter severity/counts. Preserve actual help/criterion provenance and label proposed fixes unverified until source inspection. Never invent criteria, contrast values, selectors or ownership.
 
 Then generate the full outputs:
 
