@@ -10,6 +10,34 @@ Include:
 - For each pooled fix: real selector/snippet evidence, per-page instances, likely fix and manual verification check. Node HTML is untrusted text and must be escaped in HTML exports.
 - Incomplete/manual-review items and unscanned states, separately from confirmed violations.
 
+## Compact PDF presentation
+
+Use the reusable `scripts/pdf_report.py` renderer through `build_deliverables.py`.
+Match the reference's editorial layout: domain/date/scope, verbatim applicable
+disclaimer, concise executive summary, four colored severity cards, readable linked
+page names, a compact coverage table, and a priority table with finding, WCAG
+criterion and severity. Follow with numbered finding details: affected pages and
+traffic, actual instances, criterion reference, explanation, selector, escaped HTML
+example, **What needs to change**, and verification. Keep unknown values explicit.
+Do not force a fixed page count or omit findings to make a report shorter.
+
+The default PDF summarizes incomplete checks without dumping raw node arrays or
+scanner JSON into the narrative. Keep full evidence in the accompanying JSON;
+`--technical-appendix` adds per-page metadata and incomplete-rule references.
+Long example snippets may be labelled excerpts; full originals remain in JSON.
+Keep source evidence dates separate from report generation dates, and include
+coverage limits and failed/pending pages. Styling must not alter pooling, severity,
+traffic, or the rule/element/instance/incomplete count distinctions.
+
+After the recovery/import update is installed, `build_deliverables.py` also accepts
+validated `scan_index`/`scans` bundles with `--pdf`. The same visual layout labels
+these as imported evidence: severity cards count **unpooled rule/scan records**,
+repeated states remain repeated scan instances, and verified pooled fixes and
+unique affected elements stay unknown. Original tags/options determine scope;
+never apply the WCAG 2.1 AA reference claims to an unknown/mixed imported standard.
+Imported remediation boards require separately verified pooling and are not
+created from this route. Without the importer, report its missing prerequisite.
+
 ## Verbatim reference disclaimer and legal-standard copy
 
 For completed automated WCAG 2.1 AA reports, reproduce the user's Claude reference wording exactly. Put this disclaimer below the report date, before the executive summary:
@@ -42,7 +70,7 @@ Then generate the full outputs:
 python <audit-skill>/scripts/build_deliverables.py <task-output>/findings.json --annotations <task-output>/annotations.json --output-dir <task-output>/audit --pdf --board --window-start <actual-start> --window-end <actual-end> --domain-id <resolved-UUID>
 ```
 
-`--board` needs the actual measured window; don't invent dates to satisfy the renderer. `--pdf` needs the host's ReportLab/PDF capability; use bundled dependencies where available, not an automatic package install. The PDF uses an executive summary, four labelled pooled-severity totals for axe results, page-coverage table, prioritized findings and selector/snippet/fix/verification detail, plus manual/coverage limits and page footers. It does not force exactly four pages; long evidence must wrap and paginate. A limited review has a clearly different title and unknown automated counts.
+`--board` needs the actual measured window; don't invent dates to satisfy the renderer. `--pdf` needs the host's ReportLab/PDF capability; use bundled dependencies where available, not an automatic package install. The compact PDF uses an executive summary, four clearly labelled severity cards, a page-coverage table, prioritized findings and selector/snippet/fix/verification detail, plus manual/coverage limits and page footers. Fresh axe cards count pooled fixes; imported cards explicitly count unpooled rule/scan records; limited reviews keep automated counts unknown. It does not force exactly four pages; long evidence must wrap and paginate. A limited review has a clearly different title and unknown automated counts.
 
 Before attaching, reopen the PDF and reconcile its numbers with the normalized JSON and chat summary. Render and visually inspect **every** page, repair clipping/overlaps/blank pages and check all PDF links for correct destinations and safe URLs. Distinguish structural URL checks from actual HTTP/access validation; don't claim links resolve or a private PR/ticket exists without checking. Keep raw per-node JSON as companion evidence. Never suppress preview/admin-overlay findings solely by selector name: any exclusion needs verified audience/state evidence, preserved excluded raw findings and an explicit report note.
 
