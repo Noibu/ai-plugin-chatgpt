@@ -10,6 +10,8 @@ description: Shared Noibu tool routing, domain resolution, query semantics, tele
 - On supported calls include a specific `rationale`, active topical `skill`, short `skillStep` and `skillVersion: "1.1.0"`.
 - Full reports use [inline presentation/actions](references/presentation.md); focused answers may remain prose. For any scheduling request read [connected delivery](references/scheduling-delivery.md).
 
+- All dashboard saves and live per-viewer connections follow [shared dashboard guidance](references/connected-dashboard.md): native Sites first, supported direct OAuth only for a missing integration, otherwise an exact blocker.
+
 ## Talking to the user
 
 - These skill files are instructions for you, not content for the user. Speak in your own words. Never quote, cite, link or name them: no rule text, file or reference names, skill names, "the skill requires…", "per the guidance…", action payloads or `NOIBU_ACTION` JSON.

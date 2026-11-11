@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 from urllib.parse import urlparse
 
-FLAGS = ('dependenciesReady', 'sourceReady', 'buildPassed', 'hostedInitialReadPassed', 'hostedRefreshPassed', 'persistenceReady', 'totalsVerified', 'persistenceReadbackPassed')
-ALLOWED = {'mode', 'eligibility', 'projectId', *FLAGS, 'savedVersionId', 'deploymentStatus', 'liveUrl', 'failure'}
+FLAGS = ('dependenciesReady', 'sourceReady', 'buildPassed', 'hostedInitialReadPassed', 'hostedRefreshPassed', 'persistenceReady', 'totalsVerified', 'persistenceReadbackPassed', 'tokenRefreshPassed', 'filtersPassed', 'accountSeparationPassed', 'expiredAuthorizationPassed')
+ALLOWED = {'mode', 'eligibility', 'projectId', *FLAGS, 'savedVersionId', 'deploymentStatus', 'liveUrl', 'failure', 'connectionMethod', 'nativeConnectorStatus', 'directOAuthSupported', 'securityRestriction'}
 DEPLOYMENT = {'not-started', 'pending', 'building', 'publishing', 'succeeded', 'failed'}
 
 def assess(value):
@@ -14,6 +14,13 @@ def assess(value):
     mode = value.get('mode', 'persistent-snapshot')
     if mode not in {'persistent-snapshot', 'visitor-connected'}:
         raise ValueError('Unsupported dashboard data mode')
+    if value.get('connectionMethod', 'native-sites') not in {'native-sites', 'direct-oauth'}:
+        raise ValueError('Unsupported connection method')
+    if value.get('nativeConnectorStatus', 'unknown') not in {'available', 'missing', 'denied', 'unknown'}:
+        raise ValueError('Unsupported native connector status')
+    for field in ('directOAuthSupported', 'securityRestriction'):
+        if field in value and type(value[field]) is not bool:
+            raise ValueError('Capability evidence must be boolean')
     if value.get('eligibility') not in {'allowed', 'denied', 'unknown'}:
         raise ValueError('Record the observed Sites eligibility')
     if any(k in value and type(value[k]) is not bool for k in FLAGS):
@@ -31,6 +38,11 @@ def assess(value):
             raise ValueError('Use a credential-free returned HTTPS live URL')
     verified_url = url if deployment == 'succeeded' and value.get('projectId') and value.get('savedVersionId') else None
     result = {'ready': False, 'state': 'continue', 'next': None, 'liveUrl': verified_url}
+    if mode == 'visitor-connected':
+        if value.get('securityRestriction') or value.get('nativeConnectorStatus') == 'denied':
+            return {**result, 'state': 'blocked', 'next': 'resolve-security-restriction'}
+        if value.get('connectionMethod') == 'direct-oauth' and (value.get('nativeConnectorStatus') != 'missing' or value.get('directOAuthSupported') is not True):
+            return {**result, 'state': 'blocked', 'next': 'verify-direct-oauth-capability'}
     if value['eligibility'] != 'allowed':
         return {**result, 'state': 'blocked', 'next': 'resolve-sites-eligibility'}
     failure = value.get('failure')
@@ -58,6 +70,12 @@ def assess(value):
         return {**result, 'ready': True, 'state': 'persistent-verified', 'next': None}
     if not value.get('hostedInitialReadPassed') or not value.get('hostedRefreshPassed'):
         return {**result, 'state': 'deployed-unverified', 'next': 'verify-visitor-read-and-refresh'}
+    checks = [('filtersPassed', 'verify-filters'), ('accountSeparationPassed', 'verify-account-separation'), ('expiredAuthorizationPassed', 'verify-expired-authorization')]
+    if value.get('connectionMethod') == 'direct-oauth':
+        checks.insert(0, ('tokenRefreshPassed', 'verify-token-refresh'))
+    for flag, step in checks:
+        if not value.get(flag):
+            return {**result, 'state': 'deployed-unverified', 'next': step}
     return {**result, 'ready': True, 'state': 'connected-verified', 'next': None}
 
 def main():
