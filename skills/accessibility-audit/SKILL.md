@@ -21,8 +21,10 @@ The built-in browser is a separate option without Chrome-extension requirements.
 - Read the current browser API and [scan/findings procedure](references/scan-and-findings.md).
 - Use supported document-readiness operations, then a minimal approved awaited-result execution probe; only after success load bundled checksum-pinned axe and run the bundled scan expression.
 - Distinguish temporary paused-document CDP errors from missing permissions/interface; follow the bounded readiness/retry procedure rather than declaring advertised CDP unusable after one transient error.
+- If a native approval status appears without an actionable approval control, or the user reports that they cannot respond to it, classify the scan as blocked by the host approval UI. Stop the pending browser attempt; do not ask the user to approve an unavailable control or repeat the same request indefinitely.
 - Results return from the page. Do not bypass denial through shell, raw CDP, console, bookmarklets or another automation channel, or substitute a remote job automatically.
 - Completed exports retain original URL/time/state/engine/options and are not fresh scans. A separately requested remote job is outside this browser flow; QUEUED is not findings.
+- For an export containing several `axe.run()` results for states or scoped elements of the same URL, use [the multi-state importer](scripts/import_axe_bundle.py) when its `scan_index`/`scans` bundle format matches. Preserve each result's actual URL, state, scope, viewport, timestamp, options, and raw arrays. Count scan instances separately from distinct pages; never invent unique URLs to fit the single-result builder.
 
 ## Scope and resume
 
@@ -30,6 +32,7 @@ The built-in browser is a separate option without Chrome-extension requirements.
 - Reuse selected URLs/window and validate completed evidence on resume; preserve immutable original time/state/options and scan remaining pages only. One completed homepage in ten pages means nine pending, not ten new scans.
 - Without approved execution, guide permitted setup and rediscover capabilities. Unless axe-only, perform the distinct **Browser-based accessibility review — axe not run** using supported snapshots/screenshots/read-only observations. Report reviewed/unreviewed pages, manual observations, verification items and unchecked states.
 - Limited review uses [the review exporter](scripts/build_review.py): zero completed axe scans, unknown automated severities, no invented axe violations. If inspection is unavailable or axe-only, return the precise prerequisite and selected scope.
+- For a blocked browser scan, offer two explicit routes: import a completed axe export with its original provenance, or, when `noibu_start_ada_audit` is available and the user chooses a separate Noibu-hosted crawl, start that single-page job. The start tool alone does not deliver findings. A queued job is not an audit result; verify the returned run link before describing it as usable, and report any redirect or access failure. Use completed findings only when actually retrieved or supplied. The hosted crawl may render a different state from the user's browser.
 
 ## Findings and deliverables
 
