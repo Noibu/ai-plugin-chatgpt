@@ -34,8 +34,6 @@ The shared client recognizes `noibuSignInPath` for same-origin reconnect links. 
 
 ## Required verification
 
-Run `node --test tests/*.test.mjs` and `python3 -m unittest discover -s tests -p 'test_*.py'` from the repository root for package checks. These use simulated providers and do not prove hosted runtime readiness.
-
 Before claiming a Site is live-connected, record hosted evidence for initial provider reads, manual Refresh, forced access-token expiry followed by refresh and an authenticated read (including rotation/preservation), and every filter's effect on provider queries and returned cohorts. Use two authorized test viewers with different Noibu permissions: verify separate token records and results, forbidden-domain rejection, sign-out/account switching and no cross-viewer cache reuse. Test expired/replayed/wrong-viewer state, absent connection, revoked refresh token, provider 401/403 and transient failures. Verify reconnect/stale states and that no token reaches browser responses or logs. If a second test account or another prerequisite is unavailable, explicitly leave that verification pending; do not mark readiness from one account's success.
 
 An OAuth viewer connection does not authorize unattended background reads. Follow the separate linked-schedule/writer workflow for scheduled updates. Snapshots always retain their snapshot label and capture time.
