@@ -1,0 +1,63 @@
+name: Release Plugin
+
+# Releases the plugin at the version in plugin.json. The version check on each
+# pull request makes sure that version is new, so a merge that changes the
+# plugin always has a number of its own.
+on:
+  push:
+    branches: [main]
+    paths:
+      - plugin.json
+      - mcp.json
+      - assets/**
+      - skills/**
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' plugin.json)
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error file=plugin.json::version \"$VERSION\" is not of the form 1.2.3"
+            exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "::error file=plugin.json::v$VERSION is already released. Raise version in plugin.json and merge again."
+            exit 1
+          fi
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Releasing v$VERSION"
+
+      # Same layout as GitHub's "Download ZIP" (one top-level folder), which is
+      # the shape ChatGPT's "Upload plugin" is documented to accept.
+      - name: Package plugin
+        run: |
+          mkdir -p build dist
+          git archive --format=tar --prefix=noibu/ HEAD | tar -x -C build
+          rm -rf build/noibu/.github build/noibu/.gitignore
+          cd build && zip -r ../dist/noibu-chatgpt.zip noibu \
+            -x '*.DS_Store' -x '*__pycache__*' -x '*.zip'
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          gh release create "$TAG" dist/noibu-chatgpt.zip \
+            --target "$GITHUB_SHA" \
+            --title "$TAG" \
+            --generate-notes
