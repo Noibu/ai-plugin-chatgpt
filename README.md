@@ -13,7 +13,7 @@ your store's real code, and save reports as private Live Sites with scheduled up
 
 ### ChatGPT
 
-1. On this repo, click **Code → Download ZIP**. Don't extract or modify the file.
+1. Download `noibu-chatgpt.zip` from the [latest release](https://github.com/Noibu/ai-plugin-chatgpt/releases/latest). Don't extract or modify the file.
 2. In ChatGPT, switch to your organization's workspace and open **Workspace settings → Plugins** (requires an admin).
 3. Select **Add → Upload plugin**, choose the ZIP, then select **Add plugin** and wait for processing to finish.
 4. Click **Connect** and sign in with your Noibu account
@@ -55,6 +55,7 @@ plugin.json   # Plugin manifest (ChatGPT interface metadata under extensions.com
 mcp.json      # Noibu MCP server (https://mcp.noibu.com/mcp, OAuth)
 skills/       # One folder per skill: SKILL.md, agents/openai.yaml, references/, scripts/, assets/
 assets/       # Logos
+.github/      # Release workflow
 ```
 
 ## How to develop
@@ -63,6 +64,15 @@ assets/       # Logos
 2. Connect and authenticate with Noibu
 3. Edit skills under `skills/`; ChatGPT-specific behaviour lives in
    `skills/querying-noibu-data/references/chatgpt-runtime.md`
+
+## Releases
+
+A merge to `main` that changes the plugin (`plugin.json`, `mcp.json`, `assets/` or `skills/`) publishes a
+[GitHub release](https://github.com/Noibu/ai-plugin-chatgpt/releases) at the `version` in `plugin.json`, with
+`noibu-chatgpt.zip` attached. Changes to anything else, such as this README, don't make a release.
+
+A PR that changes the plugin must raise `version` in `plugin.json` above the latest release (for example
+`1.2.8` → `1.2.9`). The **Version Check** workflow fails the PR otherwise.
 
 ## Documentation
 https://help.noibu.com/articles/4186054264-noibu-plugin-installation-for-chatgpt
